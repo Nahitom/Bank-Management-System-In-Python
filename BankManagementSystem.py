@@ -6,17 +6,21 @@ class BankSystem:
         self.balance = 0
         self.customers_list = {}
         self.customer = {}
+        self.user_id = 0
 
     
     def create_account(self):
+        self.balance = 0
         self.id += 1
         self.first_name, self.last_name = self.get_name()
         self.initial_deposit = self.get_initial_deposit()
         self.balance += self.initial_deposit
-        self.customer["First Name"] = self.first_name
-        self.customer["Last Name"] = self.last_name
-        self.customer["Balance"] = self.balance
-        self.customers_list[self.id] = self.customer
+
+        customer = {
+            "First Name": self.first_name,
+            "Last Name": self.last_name,
+            "Balance": self.balance }
+        self.customers_list[self.id] = customer
 
     def get_id(self):
         self.id = int(input("What's your ID? "))
@@ -39,17 +43,26 @@ class BankSystem:
         self.withdraw_amount = float(input("Enter amount to be withdrawn: "))
         return self.withdraw_amount
 
-    def withdraw(self):
-        self.balance -= self.get_withdraw_amount()
+    def withdraw(self, user_id):
+        user_id = self.get_id()
+        if user_id in self.customers_list:
+            withdraw_amount = self.get_withdraw_amount()
+            self.customers_list[user_id]["Balance"] -= withdraw_amount
+            print(f"You have successfully withdrawn {str(self.withdraw_amount)} from your account. Your new balance is {str(self.customers_list[user_id]['Balance'])}.")
 
-    def deposit(self):
-        deposit_amount = self.get_deposit_amount()
-        self.balance += deposit_amount
+
+    def deposit(self, user_id):
+        user_id = self.get_id()
+        if user_id in self.customers_list:
+            deposit_amount = self.get_deposit_amount()
+            self.customers_list[user_id]["Balance"] += deposit_amount
+            print(f"You have successfully deposited {str(self.deposit_amount)} to your account. Your new balance is {str(self.customers_list[user_id]['Balance'])}.")
 
         
-    def display_balance(self):
-        self.customer["Balance"] = self.balance
-        return self.balance
+    def display_balance(self, user_id):
+        user_id = self.get_id()
+        if user_id in self.customers_list:
+            return self.customers_list[user_id]["Balance"]
 
 
     def main(self):
@@ -82,18 +95,16 @@ class BankSystem:
                     self.create_account()
                     print(f"You have successfully created an account.Your ID is {self.id}")
                 case 2:
-                    self.deposit()
-                    print(f"You have successfully deposited {str(self.deposit_amount)} to your account. Your new balance is {str(self.display_balance())}.")
+                    self.deposit(self.id)
 
                 case 3:
-                    self.withdraw()
-                    print(f"You have successfully withdrawn {str(self.withdraw_amount)} from your account. Your new balance is {str(self.display_balance())}")
+                    self.withdraw(self.id)
 
                 case 4:
                     self.transfer()
                     break
                 case 5:
-                    print(f"Your balance is {self.display_balance()}")
+                    print(f"Your balance is {self.display_balance(self.id)}")
                 case _:
                     print("Invalid input. Please try again! ")
 
@@ -104,7 +115,9 @@ bank_system.main()
 # print(bank_system.first_name)
 # print(bank_system.last_name)
 # print(bank_system.initial_deposit)
-# print(bank_system.customers_list[0])
+print(bank_system.customers_list[1])
+print(bank_system.customers_list[2])
+
 
 
     
