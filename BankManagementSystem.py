@@ -19,6 +19,9 @@ class BankSystem:
         self.customer["Balance"] = self.balance
         self.customers_list.append(self.customer)
 
+    def get_id(self):
+        self.id = int(input("What's your ID? "))
+        return self.id
 
     def get_name(self):
         first_name = input("Enter Your first name: ")
@@ -55,10 +58,11 @@ class BankSystem:
         create_account = input("Enter any key to create account or '0' to quit: ")
 
         if create_account == "0":
+            print("\nExiting...\n")
             sys.exit()
         else:
             self.create_account()
-            print("\nYou have successfully created an account.")
+            print(f"\nYou have successfully created an account. And your ID is {self.id}.")
 
         while True:
 
@@ -77,7 +81,7 @@ class BankSystem:
             match(choice):
                 case 1:
                     self.create_account()
-                    print("You have successfully created an account.")
+                    print(f"You have successfully created an account.Your ID is {self.id}")
                 case 2:
                     self.deposit()
                     print(f"You have successfully deposited {str(self.deposit_amount)} to your account. Your new balance is {str(self.display_balance())}.")
