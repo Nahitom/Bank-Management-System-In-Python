@@ -4,7 +4,7 @@ class BankSystem:
     def __init__(self):
         self.id = 0
         self.balance = 0
-        self.customers_list = []
+        self.customers_list = {}
         self.customer = {}
 
     
@@ -13,11 +13,10 @@ class BankSystem:
         self.first_name, self.last_name = self.get_name()
         self.initial_deposit = self.get_initial_deposit()
         self.balance += self.initial_deposit
-        self.customer["Id"] = self.id
         self.customer["First Name"] = self.first_name
         self.customer["Last Name"] = self.last_name
         self.customer["Balance"] = self.balance
-        self.customers_list.append(self.customer)
+        self.customers_list[self.id] = self.customer
 
     def get_id(self):
         self.id = int(input("What's your ID? "))
