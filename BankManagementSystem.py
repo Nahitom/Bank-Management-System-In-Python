@@ -7,6 +7,9 @@ class BankSystem:
         self.customers_list = {}
         self.customer = {}
         self.user_id = 0
+        self.from_id = 0
+        self.target_id = 0
+        self.transfer_amount = 0
 
     
     def create_account(self):
@@ -15,7 +18,6 @@ class BankSystem:
         self.first_name, self.last_name = self.get_name()
         self.initial_deposit = self.get_initial_deposit()
         self.balance += self.initial_deposit
-
         customer = {
             "First Name": self.first_name,
             "Last Name": self.last_name,
@@ -43,6 +45,10 @@ class BankSystem:
         self.withdraw_amount = float(input("Enter amount to be withdrawn: "))
         return self.withdraw_amount
 
+    def get_transfer_amount(self):
+        self.transfer_amount = float(input("Enter the amount you wish to transfer: "))
+        return self.transfer_amount
+
     def withdraw(self, user_id):
         user_id = self.get_id()
         if user_id in self.customers_list:
@@ -58,6 +64,15 @@ class BankSystem:
             self.customers_list[user_id]["Balance"] += deposit_amount
             print(f"You have successfully deposited {str(self.deposit_amount)} to your account. Your new balance is {str(self.customers_list[user_id]['Balance'])}.")
 
+    def transfer(self, from_id, target_id):
+        from_id = self.get_id()
+        target_id = int(input("Enter the ID you wish to transfer: "))
+        if from_id in self.customers_list and target_id in self.customers_list:
+            transfer_amount = self.get_transfer_amount()
+            self.customers_list[from_id]["Balance"] -= transfer_amount
+            self.customers_list[target_id]["Balance"] += transfer_amount
+        print(f"You have successfully transferred {str(self.transfer_amount)} to {self.customers_list[target_id]['First Name']}.")
+
         
     def display_balance(self, user_id):
         user_id = self.get_id()
@@ -65,58 +80,64 @@ class BankSystem:
             return self.customers_list[user_id]["Balance"]
 
 
-    def main(self):
-        print("Hello, this is a simple banking system, please read the following instructions to continue to our system...\n")
-        create_account = input("Enter any key to create account or '0' to quit: ")
+def main():
+    print("Hello, this is a simple banking system, please read the following instructions to continue to our system...\n")
+    create_account = input("Enter any key to create account or '0' to quit: ")
 
-        if create_account == "0":
-            print("\nExiting...\n")
-            sys.exit()
-        else:
-            self.create_account()
-            print(f"\nYou have successfully created an account. And your ID is {self.id}.")
+    if create_account == "0":
+        print("\nExiting...\n")
+        sys.exit()
+    else:
+        bank_system.create_account()
+        print(f"\nYou have successfully created an account. And your ID is {bank_system.id}.")
 
-        while True:
+    while True:
 
-            print("\n1: To create account")
-            print("2: To deposit money")
-            print("3: To withdraw money")
-            print("4: To transfer money")
-            print("5: To check balance")
-            print("0 to quit\n")
+        print("\n1: To create account")
+        print("2: To deposit money")
+        print("3: To withdraw money")
+        print("4: To transfer money")
+        print("5: To check balance")
+        print("6: To display all custumers' informations")
+        print("0 to quit\n")
 
 
-            choice = int(input("Enter your choice: "))
-            if choice == 0:
-                break
+        choice = int(input("Enter your choice: "))
+        if choice == 0:
+            break
 
-            match(choice):
-                case 1:
-                    self.create_account()
-                    print(f"You have successfully created an account.Your ID is {self.id}")
-                case 2:
-                    self.deposit(self.id)
+        match(choice):
+            case 1:
+                bank_system.create_account()
+                print(f"You have successfully created an account.Your ID is {bank_system.id}")
+            case 2:
+                bank_system.deposit(bank_system.id)
 
-                case 3:
-                    self.withdraw(self.id)
+            case 3:
+                bank_system.withdraw(bank_system.id)
 
-                case 4:
-                    self.transfer()
-                    break
-                case 5:
-                    print(f"Your balance is {self.display_balance(self.id)}")
-                case _:
-                    print("Invalid input. Please try again! ")
+            case 4:
+                bank_system.transfer(bank_system.from_id, bank_system.target_id)
+                print("Success!")
+            case 5:
+                print(f"Your balance is {bank_system.display_balance(bank_system.id)}")
+            case 6:
+                for id in bank_system.customers_list:
+                    print(f'ID: {id}\nFirst Name: {bank_system.customers_list[id]["First Name"]}\nLast Name: {bank_system.customers_list[id]["Last Name"]}\nBalance: {bank_system.customers_list[id]["Balance"]}')
+            case _:
+                print("Invalid input. Please try again! ")
 
     
 bank_system = BankSystem()
-bank_system.main()
+
+if __name__ == "__main__":
+    main()
 # print(bank_system.id)
 # print(bank_system.first_name)
 # print(bank_system.last_name)
 # print(bank_system.initial_deposit)
-print(bank_system.customers_list[1])
-print(bank_system.customers_list[2])
+# print(bank_system.customers_list[1])
+# print(bank_system.customers_list[2])
 
 
 
