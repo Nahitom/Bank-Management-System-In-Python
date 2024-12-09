@@ -24,30 +24,60 @@ class BankSystem:
             "Balance": self.balance }
         self.customers_list[self.id] = customer
 
-    def get_id(self):
-        self.id = int(input("What's your ID? "))
-        return self.id
+    def get_id(self, prompt="What's your ID? "):
+        while True:
+            try:
+                self.user_id = int(input(prompt))
+                return self.user_id
+            except ValueError:
+                print("Invalid Input! Please try again.")
 
     def get_name(self):
-        first_name = input("Enter Your first name: ")
-        last_name = input("Enter your last name: ")
+        while True:
+            first_name = input("Enter Your first name: ").strip()
+            if first_name:
+                break
+            else:
+                print("Invalid input! Please enter your first name correctly.")
+        while True:
+            last_name = input("Enter your last name: ").strip()
+            if last_name:
+                break
+            else:
+                print("Invalid input! Please enter your last name correctly.")
         return first_name, last_name
     
     def get_initial_deposit(self):
-        initial_deposit = float(input("What is the initial deposit? "))
-        return initial_deposit
+        while True:
+            try:
+                initial_deposit = float(input("What is the initial deposit? "))
+                return initial_deposit
+            except ValueError:
+                print("Invalid Input! Please try again.")
     
     def get_deposit_amount(self):
-        self.deposit_amount = float(input("Enter money to be deposited: "))
-        return self.deposit_amount
+        while True:
+            try:
+                self.deposit_amount = float(input("Enter money to be deposited: "))
+                return self.deposit_amount
+            except ValueError:
+                print("Invalid Input! Please try again.")
 
     def get_withdraw_amount(self):
-        self.withdraw_amount = float(input("Enter amount to be withdrawn: "))
-        return self.withdraw_amount
+        while True:
+            try:
+                self.withdraw_amount = float(input("Enter amount to be withdrawn: "))
+                return self.withdraw_amount
+            except ValueError:
+                print("Invalid Input! Please try again.")
 
     def get_transfer_amount(self):
-        self.transfer_amount = float(input("Enter the amount you wish to transfer: "))
-        return self.transfer_amount
+        while True:
+            try:
+                self.transfer_amount = float(input("Enter the amount you wish to transfer: "))
+                return self.transfer_amount
+            except ValueError:
+                print("Invalid Input! Please try again.")
 
     def withdraw(self, user_id):
         user_id = self.get_id()
@@ -63,10 +93,13 @@ class BankSystem:
             deposit_amount = self.get_deposit_amount()
             self.customers_list[user_id]["Balance"] += deposit_amount
             print(f"You have successfully deposited {str(self.deposit_amount)} to your account. Your new balance is {str(self.customers_list[user_id]['Balance'])}.")
+        else:
+            print("ID not found.")
 
     def transfer(self, from_id, target_id):
         from_id = self.get_id()
-        target_id = int(input("Enter the ID you wish to transfer: "))
+        target_id = self.get_id("Enter the ID you wish to transfer: ")
+
         if from_id in self.customers_list and target_id in self.customers_list:
             transfer_amount = self.get_transfer_amount()
             self.customers_list[from_id]["Balance"] -= transfer_amount
@@ -132,12 +165,6 @@ bank_system = BankSystem()
 
 if __name__ == "__main__":
     main()
-# print(bank_system.id)
-# print(bank_system.first_name)
-# print(bank_system.last_name)
-# print(bank_system.initial_deposit)
-# print(bank_system.customers_list[1])
-# print(bank_system.customers_list[2])
 
 
 
