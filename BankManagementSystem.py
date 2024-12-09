@@ -120,10 +120,13 @@ class BankSystem:
         target_id = self.get_id("Enter the ID you wish to transfer: ")
 
         if from_id in self.customers_list and target_id in self.customers_list:
-            transfer_amount = self.get_transfer_amount()
-            self.customers_list[from_id]["Balance"] -= transfer_amount
-            self.customers_list[target_id]["Balance"] += transfer_amount
-        print(f"You have successfully transferred {str(self.transfer_amount)} to {self.customers_list[target_id]['First Name']}.")
+            if from_id == target_id:
+                print("You can not transfer to yourself! Please try again...")
+            else:
+                transfer_amount = self.get_transfer_amount()
+                self.customers_list[from_id]["Balance"] -= transfer_amount
+                self.customers_list[target_id]["Balance"] += transfer_amount
+                print(f"You have successfully transferred {str(self.transfer_amount)} to {self.customers_list[target_id]['First Name']}.")
 
         
     def display_balance(self, user_id):
@@ -161,7 +164,8 @@ def main():
         try:
             choice = int(input("Enter your choice: "))
             if choice == 0:
-                break
+                print("\nExiting...", flush=True)
+                sys.exit()
 
             match(choice):
                 case 1:
@@ -173,7 +177,6 @@ def main():
                     bank_system.withdraw(bank_system.id)
                 case 4:
                     bank_system.transfer(bank_system.from_id, bank_system.target_id)
-                    print("Success!")
                 case 5:
                     print(f"Your balance is {bank_system.display_balance(bank_system.id)}")
                 case 6:
