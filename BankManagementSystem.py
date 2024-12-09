@@ -31,21 +31,28 @@ class BankSystem:
                 return self.user_id
             except ValueError:
                 print("Invalid Input! Please try again.")
+            except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
 
     def get_name(self):
-        while True:
-            first_name = input("Enter Your first name: ").strip()
-            if first_name:
-                break
-            else:
-                print("Invalid input! Please enter your first name correctly.")
-        while True:
-            last_name = input("Enter your last name: ").strip()
-            if last_name:
-                break
-            else:
-                print("Invalid input! Please enter your last name correctly.")
-        return first_name, last_name
+        try:
+            while True:
+                first_name = input("Enter Your first name: ").strip()
+                if first_name:
+                    break
+                else:
+                    print("Invalid input! Please enter your first name correctly.")
+            while True:
+                last_name = input("Enter your last name: ").strip()
+                if last_name:
+                    break
+                else:
+                    print("Invalid input! Please enter your last name correctly.")
+            return first_name, last_name
+        except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
     
     def get_initial_deposit(self):
         while True:
@@ -54,6 +61,9 @@ class BankSystem:
                 return initial_deposit
             except ValueError:
                 print("Invalid Input! Please try again.")
+            except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
     
     def get_deposit_amount(self):
         while True:
@@ -62,6 +72,9 @@ class BankSystem:
                 return self.deposit_amount
             except ValueError:
                 print("Invalid Input! Please try again.")
+            except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
 
     def get_withdraw_amount(self):
         while True:
@@ -70,6 +83,9 @@ class BankSystem:
                 return self.withdraw_amount
             except ValueError:
                 print("Invalid Input! Please try again.")
+            except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
 
     def get_transfer_amount(self):
         while True:
@@ -78,6 +94,9 @@ class BankSystem:
                 return self.transfer_amount
             except ValueError:
                 print("Invalid Input! Please try again.")
+            except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
 
     def withdraw(self, user_id):
         user_id = self.get_id()
@@ -115,14 +134,19 @@ class BankSystem:
 
 def main():
     print("Hello, this is a simple banking system, please read the following instructions to continue to our system...\n")
-    create_account = input("Enter any key to create account or '0' to quit: ")
+    try:
+        create_account = input("Enter any key to create account or '0' to quit: ")
 
-    if create_account == "0":
-        print("\nExiting...\n")
+        if create_account == "0":
+            print("\nExiting...\n", flush=True)
+            sys.exit()
+        else:
+            bank_system.create_account()
+            print(f"\nYou have successfully created an account. And your ID is {bank_system.id}.")
+    except KeyboardInterrupt:
+        print("\nClosing...", flush=True)
         sys.exit()
-    else:
-        bank_system.create_account()
-        print(f"\nYou have successfully created an account. And your ID is {bank_system.id}.")
+
 
     while True:
 
@@ -134,32 +158,34 @@ def main():
         print("6: To display all custumers' informations")
         print("0 to quit\n")
 
+        try:
+            choice = int(input("Enter your choice: "))
+            if choice == 0:
+                break
 
-        choice = int(input("Enter your choice: "))
-        if choice == 0:
-            break
-
-        match(choice):
-            case 1:
-                bank_system.create_account()
-                print(f"You have successfully created an account.Your ID is {bank_system.id}")
-            case 2:
-                bank_system.deposit(bank_system.id)
-
-            case 3:
-                bank_system.withdraw(bank_system.id)
-
-            case 4:
-                bank_system.transfer(bank_system.from_id, bank_system.target_id)
-                print("Success!")
-            case 5:
-                print(f"Your balance is {bank_system.display_balance(bank_system.id)}")
-            case 6:
-                for id in bank_system.customers_list:
-                    print(f'ID: {id}\nFirst Name: {bank_system.customers_list[id]["First Name"]}\nLast Name: {bank_system.customers_list[id]["Last Name"]}\nBalance: {bank_system.customers_list[id]["Balance"]}')
-            case _:
-                print("Invalid input. Please try again! ")
-
+            match(choice):
+                case 1:
+                    bank_system.create_account()
+                    print(f"You have successfully created an account.Your ID is {bank_system.id}")
+                case 2:
+                    bank_system.deposit(bank_system.id)
+                case 3:
+                    bank_system.withdraw(bank_system.id)
+                case 4:
+                    bank_system.transfer(bank_system.from_id, bank_system.target_id)
+                    print("Success!")
+                case 5:
+                    print(f"Your balance is {bank_system.display_balance(bank_system.id)}")
+                case 6:
+                    for id in bank_system.customers_list:
+                        print(f'ID: {id}\nFirst Name: {bank_system.customers_list[id]["First Name"]}\nLast Name: {bank_system.customers_list[id]["Last Name"]}\nBalance: {bank_system.customers_list[id]["Balance"]}')
+                case _:
+                    print("Please chose one from the above alternatives: ")
+        except ValueError:
+            print("Invalid input. Please try again! ")
+        except KeyboardInterrupt:
+                print("\nClosing...", flush=True)
+                sys.exit()
     
 bank_system = BankSystem()
 
